@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.tron.pricecenter.core.dao.TClawResultMapper">
+  <resultMap id="BaseResultMap" type="org.tron.pricecenter.core.model.TClawResult">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="pair_id" jdbcType="INTEGER" property="pairId"/>
+    <result column="clawer_id" jdbcType="INTEGER" property="clawerId"/>
+    <result column="price" jdbcType="DECIMAL" property="price"/>
+    <result column="usdt_price" jdbcType="DECIMAL" property="usdtPrice"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+  </resultMap>
+</mapper>
