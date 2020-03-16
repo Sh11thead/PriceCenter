@@ -22,6 +22,9 @@ public abstract class HttpGetter {
   @Autowired
   protected TRONDefiConfigurer tronDefiConfigurer;
 
+
+  public abstract Integer getClawerId() throws Exception;
+
   protected BigDecimal getUSDTPrice() {
     TComputedResult usdtResult = tComputedResultService
         .getLastestResultByPairId(TRONDefiConfigurer.USDT_USD_PAIR_ID);
@@ -34,6 +37,5 @@ public abstract class HttpGetter {
 
   public abstract List<TClawResult> getClawResult() throws Exception;
 
-  public abstract Integer getClawerId() throws Exception;
 
 }

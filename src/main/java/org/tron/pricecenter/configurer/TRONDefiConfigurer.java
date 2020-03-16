@@ -1,7 +1,9 @@
 package org.tron.pricecenter.configurer;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import lombok.Data;
@@ -16,6 +18,8 @@ import org.tron.pricecenter.service.TTokenPairService;
 public class TRONDefiConfigurer {
 
   public static final int USDT_USD_PAIR_ID = 1;
+  @Autowired
+  TTokenPairService tTokenPairService;
 
 
   @Value("${spring.profiles.active}")
@@ -33,9 +37,10 @@ public class TRONDefiConfigurer {
   String baQueryUrl;
   @Value("${cmcapiKeys}")
   String cmcapiKeys;
-
-  @Autowired
-  TTokenPairService tTokenPairService;
+  @Value("${hbExclude}")
+  String hbExcludeRaw;
+  @Value("${baExclude}")
+  String baExcludeRaw;
 
 
   private List<TTokenPair> globalTokenPairList;
@@ -44,13 +49,24 @@ public class TRONDefiConfigurer {
 
   private Map<String, TTokenPair> globalTokenPairNameMap;
 
+  private Set<String> hbExclude = new HashSet();
+  private Set<String> baExclude = new HashSet();
+
+
   @PostConstruct
   public void init() {
     globalTokenPairList = tTokenPairService.findAll();
-
     globalTokenPairMap = globalTokenPairList.stream()
         .collect(Collectors.toConcurrentMap(m -> m.getId(), m -> m));
     globalTokenPairNameMap = globalTokenPairList.stream()
         .collect(Collectors.toConcurrentMap(m -> m.getPairA() + m.getPairB(), m -> m));
+
+    for (String exclude : hbExcludeRaw.split(",")) {
+      hbExclude.add(exclude);
+    }
+    for (String exclude : baExcludeRaw.split(",")) {
+      baExclude.add(exclude);
+    }
+
   }
 }

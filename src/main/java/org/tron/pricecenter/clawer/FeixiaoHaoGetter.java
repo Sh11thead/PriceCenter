@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.tron.pricecenter.clawer.httpget.HttpGetter;
 import org.tron.pricecenter.core.model.TClawResult;
+import org.tron.pricecenter.core.model.TTokenPair;
 
 @Slf4j
 @Component
@@ -26,14 +27,10 @@ public class FeixiaoHaoGetter extends HttpGetter {
   private LinkedHashMap<String, Integer> getConfig() {
     //Customize Here
     LinkedHashMap<String, Integer> config = new LinkedHashMap<>();
-    config.put("USDT-USD", 1);
-    config.put("BTC-USD", 2);
-    config.put("ETH-USD", 3);
-    config.put("MKR-USD", 4);
-    config.put("DAI-USD", 5);
-    config.put("TRX-USD", 6);
-    config.put("TRX-BTC", 7);
-    config.put("TRX-ETH", 8);
+    for (TTokenPair tokenPair : tronDefiConfigurer.getGlobalTokenPairList()) {
+      String pairName = tokenPair.getPairA() + "-" + tokenPair.getPairB();
+      config.put(pairName, tokenPair.getId());
+    }
     return config;
   }
 

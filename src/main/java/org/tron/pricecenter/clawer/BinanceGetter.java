@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.tron.pricecenter.clawer.httpget.HttpGetter;
 import org.tron.pricecenter.core.model.TClawResult;
+import org.tron.pricecenter.core.model.TTokenPair;
 
 @Slf4j
 @Component
@@ -25,11 +26,13 @@ public class BinanceGetter extends HttpGetter {
   private LinkedHashMap<String, Integer> getConfig() {
     //Customize Here
     LinkedHashMap<String, Integer> config = new LinkedHashMap<>();
-    config.put("BTCUSDT", 2);
-    config.put("ETHUSDT", 3);
-    config.put("TRXUSDT", 6);
-    config.put("TRXBTC", 7);
-    config.put("TRXETH", 8);
+    for (TTokenPair tokenPair : tronDefiConfigurer.getGlobalTokenPairList()) {
+      String pairName = tokenPair.combineNames();
+      if (!tronDefiConfigurer.getBaExclude().contains(pairName)) {
+        pairName = pairName.replace("USD", "USDT");
+        config.put(pairName, tokenPair.getId());
+      }
+    }
     return config;
   }
 
